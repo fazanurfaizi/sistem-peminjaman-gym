@@ -8,7 +8,7 @@
             </div>
 
             <div class="col-span-4 border border-primary-grey rounded">
-                <form class="mb-6 p-8" @submit.prevent="onReservation">
+                <form class="mb-6 p-8" @submit.prevent="openConfirm">
                     <div class="mb-3">
                         <label for="room" class="mb-1 inline-block font-semibold text-sm text-black">
                             Pilih Ruangan
@@ -71,6 +71,18 @@
                 </form>
             </div>
 		</div>
+
+        <UModal v-model="isOpen">
+            <UCard>
+                <div class="space-y-2">
+                    <p class="font-bold">Apakah Anda yakin?</p>
+                    <p>Konfirmasi Reservasi Ini</p>
+                    <UButton @click="onReservation">
+                        Konfirmasi
+                    </UButton>
+                </div>
+            </UCard>
+        </UModal>
 	</section>
 </template>
 
@@ -83,6 +95,10 @@ import type { ApiResponse } from '~/types/response.type'
 definePageMeta({
   middleware: ['auth'],
 })
+
+const toast = useToast()
+
+const isOpen = ref(false)
 
 const year = dayjs().format('YYYY')
 const month = dayjs().format('MM')
@@ -107,14 +123,28 @@ const form = reactive<ReservationRequest>({
     endTime: null
 })
 
+const openConfirm = () => {
+    isOpen.value = true
+}
+
 const onReservation = async () => {
     const { data, error } = await useFetch('/api/reservations', {
         method: 'POST',
         body: form
     })
 
+    if (data) toast.add({ title: 'Reservasi berhasil dibuat' })
+
     if (error.value) {
         console.error(error.value)
     }
+
+    form.date = ''
+    form.room = null
+    form.telephone = null
+    form.startTime = null
+    form.endTime = null
+
+    isOpen.value = false
 }
 </script>

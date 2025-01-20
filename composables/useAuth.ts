@@ -12,12 +12,16 @@ export const useAuth = () => {
     const setUser = (user: User|null) => sessionUser.value = user
 
     const register = async (request: RegisterRequest) => {
-        const data: any = await $fetch('/api/auth/register', {
-            method: 'POST',
-            body: request
-        })
-
-        return data
+        try {
+            const data: any = await $fetch('/api/auth/register', {
+                method: 'POST',
+                body: request
+            })
+    
+            return data
+        } catch (error) {
+            throw error
+        }
     }
 
     const login = async (request: LoginRequest) => {
@@ -55,7 +59,7 @@ export const useAuth = () => {
 
     return {
         user: computed(() => sessionUser.value || null),
-        loggedIn: computed(() => Boolean(cookie.value)),
+        loggedIn: computed(() => Boolean(sessionUser.value)),
         register,
         login,
         logout,

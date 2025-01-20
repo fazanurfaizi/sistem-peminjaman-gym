@@ -9,7 +9,7 @@
                     id="email" 
                     v-model="form.email" 
                     type="email"
-                    class="px-3 py-1.5 w-full border rounded border-primary-grey bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primarborder-primary-grey focus:border-transparent"
+                    class="px-3 py-1.5 w-full border rounded border-primary-grey bg-white text-sm"
                     required
                 >
             </div>
@@ -21,7 +21,7 @@
                     id="password" 
                     v-model="form.password" 
                     type="password"
-                    class="px-3 py-1.5 w-full border rounded border-primary-grey bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primarborder-primary-grey focus:border-transparent"
+                    class="px-3 py-1.5 w-full border rounded border-primary-grey bg-white text-sm"
                     required
                 >
             </div>
@@ -46,6 +46,10 @@ definePageMeta({
     layout: 'auth'
 })
 
+const toast = useToast()
+
+const colorMode = useColorMode()
+console.log(colorMode.value)
 const { login } = useAuth()
 
 const form = reactive<LoginRequest>({
@@ -55,13 +59,15 @@ const form = reactive<LoginRequest>({
 
 const onLogin = async () => {
     try {
-        await login(form)
-
-        await navigateTo('/home')
+        await login(form).then(() => {
+            toast.add({ title: 'Login berhasil' })
+            navigateTo('/')
+        })
     } catch (error) {
         if (!(error instanceof FetchError)) {
             throw error;
         }
+        toast.add({ title: error.data.message })
     }
 }
 </script>

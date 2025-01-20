@@ -55,8 +55,9 @@ const onGetMe = async () => {
 
 const onLogout = async () => {
     try {
-        console.log('logout')
         await logout()
+
+        await navigateTo('/login')
     } catch (error) {
         throw error
     }

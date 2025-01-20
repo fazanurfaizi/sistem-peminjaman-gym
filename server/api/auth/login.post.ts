@@ -9,15 +9,15 @@ export default defineEventHandler(async (event) => {
     if (!email || !password) {
         throw createError({
             statusCode: 400,
-            message: 'Email and password are required'
+            message: 'Email atau password wajib diisi'
         })
     }
 
-    const user = await UserSchema.findOne({ email: body.email })
+    const user = await UserSchema.findOne({ email: email })
     if (!user) {
         throw createError({
             statusCode: 404,
-            message: 'User not found'
+            message: 'Pengguna tidak ditemukan'
         })
     }
 

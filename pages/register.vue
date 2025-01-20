@@ -6,10 +6,11 @@
                     Nama
                 </label>
                 <input 
-                    id="name" 
+                    id="name"
+                    name="name"
                     v-model="form.name" 
                     type="text"
-                    class="px-3 py-1.5 w-full border rounded border-primary-grey bg-white text-sm focus:outline-none focus:ring-2 focus:ring-slate-700 focus:border-transparent"
+                    class="px-3 py-1.5 w-full border rounded border-primary-grey bg-white text-sm"
                     required
                 >
             </div>
@@ -19,21 +20,23 @@
                 </label>
                 <input 
                     id="npm" 
+                    name="npm" 
                     v-model="form.npm" 
                     type="text"
-                    class="px-3 py-1.5 w-full border rounded border-primary-grey bg-white text-sm focus:outline-none focus:ring-2 focus:ring-slate-700 focus:border-transparent"
+                    class="px-3 py-1.5 w-full border rounded border-primary-grey bg-white text-sm"
                     required
                 >
             </div>
             <div class="mb-3">
                 <label for="email" class="mb-1 inline-block font-semibold text-sm text-black">
                     Email
-                </label>
+                </label>                
                 <input 
                     id="email" 
+                    name="email"
                     v-model="form.email" 
                     type="email"
-                    class="px-3 py-1.5 w-full border rounded border-primary-grey bg-white text-sm focus:outline-none focus:ring-2 focus:ring-slate-700 focus:border-transparent"
+                    class="px-3 py-1.5 w-full border rounded border-primary-grey bg-white text-sm"
                     required
                 >
             </div>
@@ -45,7 +48,7 @@
                     id="password" 
                     v-model="form.password" 
                     type="password"
-                    class="px-3 py-1.5 w-full border rounded border-primary-grey bg-white text-sm focus:outline-none focus:ring-2 focus:ring-slate-700 focus:border-transparent"
+                    class="px-3 py-1.5 w-full border rounded border-primary-grey bg-white text-sm"
                     required
                 >
             </div>
@@ -70,6 +73,8 @@ definePageMeta({
     layout: 'auth'
 })
 
+const toast = useToast()
+
 const { register } = useAuth()
 
 const form = reactive<RegisterRequest>({
@@ -81,13 +86,22 @@ const form = reactive<RegisterRequest>({
 
 const onRegister = async () => {
     try {
-        await register(form)
+        const validEmail = emailValidation(form.email)
 
-        await navigateTo('/home')
+        if (!validEmail) {
+            toast.add({ title: 'Email tidak valid!' })
+            return
+        }
+
+        await register(form).then(() => {
+            toast.add({ title: 'Registrasi berhasil' })
+            navigateTo('/login')
+        })
     } catch (error) {
         if (!(error instanceof FetchError)) {
             throw error;
         }    
+        toast.add({ title: error.data.message })
     }
 }
 </script>

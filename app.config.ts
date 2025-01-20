@@ -1,6 +1,11 @@
 export default defineAppConfig({
+    colorMode: {
+        preference: 'light'
+    },
     ui: {
-        primary: 'red',
-        gray: 'cool'
+        notifications: {
+          // Show toasts at the top right of the screen
+          position: 'top-0 bottom-[unset]'
+        }
     }
 })

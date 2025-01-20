@@ -38,7 +38,7 @@ import IconLayers from '~/assets/icons/layers.svg'
 import IconCalendar from '~/assets/icons/calendar.svg'
 
 const menuItems = [
-    { name: 'Home', link: '/home', icon: IconHome },
+    { name: 'Home', link: '/', icon: IconHome },
     { name: 'Jadwal', link: '/schedules', icon: IconLayers },
     { name: 'Reservasi', link: '/reservations', icon: IconCalendar },
 ];
