@@ -25,7 +25,7 @@ export default defineEventHandler(async (event) => {
     if (!verified) {
         throw createError({
             status: 401,
-            message: 'Bad credentials'
+            message: 'Email atau password salah'
         })
     }
 
