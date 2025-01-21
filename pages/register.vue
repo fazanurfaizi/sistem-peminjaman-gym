@@ -65,6 +65,7 @@
 </template>
 
 <script lang="ts" setup>
+import { NuxtLink } from '#build/components';
 import { FetchError } from 'ofetch'
 import type { RegisterRequest } from '~/types/request/auth.request';
 

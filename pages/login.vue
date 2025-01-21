@@ -25,13 +25,17 @@
                     required
                 >
             </div>
-            <div>
+            <div class="flex flex-col justify-center align-middle items-center gap-y-2">
                 <button 
                     type="submit" 
                     class="px-3 py-1.5 w-full rounded bg-light-100 font-semibold text-sm text-white bg-primary-blue hover:bg-secondary-blue focus:outline-none focus:bg-secondary-blue transition-colors"
                 >
                     Lanjutkan
                 </button>
+
+                <NuxtLink class="text-primary-blue cursor-pointer" to="/register">
+                    Register
+                </NuxtLink>
             </div>
         </form>
     </div>
